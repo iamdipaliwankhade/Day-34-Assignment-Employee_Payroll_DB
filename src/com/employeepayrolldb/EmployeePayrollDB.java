@@ -12,25 +12,32 @@ import java.util.Enumeration;
 
 public class EmployeePayrollDB {
 
-	public static boolean CreateConnection(String q) {
-		return true;
-	}
+	public static void CreatConnection() {
 
-	public static boolean preparedStatement(String name, double salary) {
-		Connection con;
 		try {
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/payroll_service", "root", "root");
-			String q = "update  employee_payroll set salary=?  where name=?";
-			PreparedStatement ps = con.prepareStatement(q);
-			ps.setDouble(1, salary);
-			ps.setString(2, name);
-			ps.executeUpdate();
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/payroll_service", "root",
+					"dipali");
+			String Select = "select * from employee_payroll";
+			PreparedStatement ps = con.prepareStatement(Select);
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				int id = res.getInt(1);
+				String name = res.getString(2);
+				String gender = res.getString(3);
+				Double salary = res.getDouble(4);
+				String date = res.getString(5);
+				System.out.println("id- " + id + " Name -" + name + " gender- " + gender + "|" + " salary -" + salary
+						+ " date- " + date);
+			}
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return true;
 
+	}
+
+	public static void main(String[] args) throws SQLException {
+		CreatConnection();
 	}
 }
