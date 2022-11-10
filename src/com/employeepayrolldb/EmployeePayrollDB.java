@@ -12,32 +12,28 @@ import java.util.Enumeration;
 
 public class EmployeePayrollDB {
 
-	public static void CreatConnection() {
+	public class EmployeePayroll {
 
-		try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/payroll_service", "root",
-					"dipali");
-			String Select = "select * from employee_payroll";
-			PreparedStatement ps = con.prepareStatement(Select);
-			ResultSet res = ps.executeQuery();
-			while (res.next()) {
-				int id = res.getInt(1);
-				String name = res.getString(2);
-				String gender = res.getString(3);
-				Double salary = res.getDouble(4);
-				String date = res.getString(5);
-				System.out.println("id- " + id + " Name -" + name + " gender- " + gender + "|" + " salary -" + salary
-						+ " date- " + date);
+		public static void CreatConnection() {
+
+			try {
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/payroll_service", "root",
+						"dipali");
+				Statement st = con.createStatement();
+				st.execute("select sum(salary) from employee_payroll");
+				st.execute("select avg(salary) from employee_payroll");
+				st.execute("select min(salary) from employee_payroll");
+				st.execute("select count(salary) from employee_payroll");
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
 			}
 
-		} catch (SQLException e) {
-
-			e.printStackTrace();
 		}
 
-	}
-
-	public static void main(String[] args) throws SQLException {
-		CreatConnection();
+		public static void main(String[] args) throws SQLException {
+			CreatConnection();
+		}
 	}
 }
